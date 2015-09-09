@@ -9,11 +9,15 @@
 #include <stdio.h>
 
 int main() {
+  /* fflush(stdin); */
+  /* fflush(stdout); */
   int client_dtr, i;
   struct sockaddr_in client;
-  int port = 9999;
+  int port = 2500;
   char buf[30];
-  char saludo[20];
+  char saludo[25];
+  
+  
   client_dtr = socket(AF_INET, SOCK_STREAM, 0);
 
   client.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -22,10 +26,17 @@ int main() {
 
   
   connect(client_dtr , (struct sockaddr *)&client , sizeof(client));
+  
   recv(client_dtr, saludo, 20, 0);
-  puts(saludo);
+  printf("%s\n", saludo);
+  fflush(stdin);
   fgets(buf, 30, stdin);
-  send(client_dtr, buf, strlen(buf), 0);
+  write(client_dtr, buf, 30);
+  int l;
+  recv(client_dtr, &l, sizeof(l), 0);
+  printf("Longitud : %i\n", l);
   close(client_dtr);
+
+  fflush(stdout);
   return 0;
 }
