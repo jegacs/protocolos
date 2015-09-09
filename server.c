@@ -43,7 +43,8 @@ int main() {
       l--;
     }
   }
-  write(client_dtr, &l, sizeof(l));
+  printf("Longitud : %i\n", l);
+  /* write(client_dtr, &l, sizeof(l)); */
   close(client_dtr);
   }
   return 0;
