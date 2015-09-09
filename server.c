@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 int main() {
+  char saludo[] = "Escriba su nombre : ";
   int port = 9999;
   
   struct sockaddr_in server;
@@ -36,7 +37,7 @@ int main() {
   client_dtr = accept(server_dtr, 
 		      (struct sockaddr *)&client, 
 		      &addrlen);
-
+  send(client_dtr, saludo, strlen(saludo), 0);
   printf("Conexión con cliente!\n");
   char buf[256];
   recv(client_dtr, buf, 256, 0);

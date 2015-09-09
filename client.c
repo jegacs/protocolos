@@ -4,55 +4,28 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h> 
+#include <arpa/inet.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-void error(const char *msg)
-{
-    perror(msg);
-    exit(0);
-}
+int main() {
+  int client_dtr, i;
+  struct sockaddr_in client;
+  int port = 9999;
+  char buf[30];
+  char saludo[20];
+  client_dtr = socket(AF_INET, SOCK_STREAM, 0);
 
-int main(int argc, char *argv[])
-{
-    int sockfd, portno, n;
-    struct sockaddr_in serv_addr;
-    struct hostent *server;
+  client.sin_addr.s_addr = inet_addr("127.0.0.1");
+  client.sin_family = AF_INET;
+  client.sin_port = htons(port);
 
-    char buffer[256];
-    //if (argc < 3) {
-    //   fprintf(stderr,"usage %s hostname port\n", argv[0]);
-    //   exit(0);
-    // }
-    portno = 9999;
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0) 
-        error("ERROR opening socket");
-    server = gethostbyname("127.0.0.1");
-    if (server == NULL) {
-        fprintf(stderr,"ERROR, no such host\n");
-        exit(0);
-    }
-
-    bzero((char *) &serv_addr, sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr, 
-         (char *)&serv_addr.sin_addr.s_addr,
-         server->h_length);
-    serv_addr.sin_port = htons(portno);
-    if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) 
-        error("ERROR connecting");
-    printf("Please enter the message: ");
-    bzero(buffer,256);
-    fgets(buffer,255,stdin);
-    n = write(sockfd,buffer,strlen(buffer));
-    if (n < 0) 
-         error("ERROR writing to socket");
-    bzero(buffer,256);
-    //n = read(sockfd,buffer,255);
-    //if (n < 0) 
-    //     error("ERROR reading from socket");
-    //printf("%s\n",buffer);
-    close(sockfd);
-    return 0;
+  
+  connect(client_dtr , (struct sockaddr *)&client , sizeof(client));
+  recv(client_dtr, saludo, 20, 0);
+  puts(saludo);
+  fgets(buf, 30, stdin);
+  send(client_dtr, buf, strlen(buf), 0);
+  close(client_dtr);
+  return 0;
 }
