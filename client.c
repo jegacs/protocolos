@@ -1,6 +1,6 @@
 /* Protocolos de Internet
  * Gabriel Acosta
-  *
+ *
  * Creacion de sockets entre servidor-cliente
  * 11/09/15
  * client.c
@@ -38,8 +38,8 @@ int main() {
 	  sizeof(client));
 
   /* Tal vez se requieran mas de una llamada
-   a recv para recibir toda la informacion 
-  enviada desde el server*/
+     a recv para recibir toda la informacion 
+     enviada desde el server*/
   recv(client_dtr, saludo, 20, 0);
 
   printf("%s\n", saludo); 

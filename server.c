@@ -1,6 +1,6 @@
 /* Protocolos de Internet
  * Gabriel Acosta
-  *
+ *
  * Creacion de sockets entre servidor-cliente
  * 11/09/15
  * server.c
@@ -40,42 +40,42 @@ int main() {
   bind(server_dtr,
        (struct sockaddr *)&server,
        sizeof(server));
-
+  
   
   listen(server_dtr, 2);
-
+  
   while(1) {
-  printf("Esperando conexiones entrantes ... \n");
-
-  client_dtr = accept(server_dtr, 
-		      (struct sockaddr *)&client, 
-		      &addrlen);
+    printf("Esperando conexiones entrantes ... \n");
     
-  printf("Conexión con cliente!\n");
-
-  write(client_dtr, saludo, 20);
-
-  recv(client_dtr, buf, 30, 0);
-
-  puts(buf);
-  
-  /* Conteo de los caracteres y eliminacion
-     de saltos de linea y espacios.*/
-
-  int l = strlen(buf);
-  int i;
-  for(i = 0; i < strlen(buf); i++) {
-    char c = buf[i];
-    if(c == '\n' || c == ' ') {
-      l--;
+    client_dtr = accept(server_dtr, 
+			(struct sockaddr *)&client, 
+			&addrlen);
+    
+    printf("Conexión con cliente!\n");
+    
+    write(client_dtr, saludo, 20);
+    
+    recv(client_dtr, buf, 30, 0);
+    
+    puts(buf);
+    
+    /* Conteo de los caracteres y eliminacion
+       de saltos de linea y espacios.*/
+    
+    int l = strlen(buf);
+    int i;
+    for(i = 0; i < strlen(buf); i++) {
+      char c = buf[i];
+      if(c == '\n' || c == ' ') {
+	l--;
+      }
     }
-  }
-
-  printf("Longitud : %i\n", l);
-  
-  write(client_dtr, &l, sizeof(l));
-  
-  close(client_dtr);
+    
+    printf("Longitud : %i\n", l);
+    
+    write(client_dtr, &l, sizeof(l));
+    
+    close(client_dtr);
   }
   return 0;
 }
