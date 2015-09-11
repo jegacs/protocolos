@@ -25,10 +25,9 @@ int main() {
   
   socklen_t addrlen;
 
-  if((server_dtr = socket(AF_INET,
-			  SOCK_STREAM,0)) == -1) {
-    printf("ERROR: socket\n");
-  }
+  server_dtr = socket(AF_INET,
+		      SOCK_STREAM,0);
+
   memset(&server, 0, sizeof(server)); /* 'Limpia' la estructura */
   
   server.sin_family = AF_INET;
@@ -38,13 +37,10 @@ int main() {
 				 */
 
   /* Bind asigna la direccion de sockaddr al descriptor */
-  int s = bind(server_dtr,
-	      (struct sockaddr *)&server,
-	      sizeof(server));
-  if(s < 0) {
-    printf("ERROR: bind\n");
-    return -1;
-  }
+  bind(server_dtr,
+       (struct sockaddr *)&server,
+       sizeof(server));
+
   
   listen(server_dtr, 2);
 
@@ -54,11 +50,7 @@ int main() {
   client_dtr = accept(server_dtr, 
 		      (struct sockaddr *)&client, 
 		      &addrlen);
-
-  if(client_dtr < 0) {
-    printf("ERROR: accept\n");
-    return -1;
-  }
+    
   printf("Conexión con cliente!\n");
 
   if(write(client_dtr, saludo, 20) < 0) {
