@@ -18,23 +18,45 @@ int main() {
   char saludo[20];
   
   
-  client_dtr = socket(AF_INET, SOCK_STREAM, 0);
+  if((client_dtr = socket(AF_INET,
+			  SOCK_STREAM, 0)) == -1) {
+    printf("ERROR: socket\n");
+    return -1;
+  }
 
   client.sin_addr.s_addr = inet_addr("127.0.0.1");
   client.sin_family = AF_INET;
   client.sin_port = htons(port);
 
-  
-  connect(client_dtr , (struct sockaddr *)&client , sizeof(client));
-  
-  recv(client_dtr, saludo, 20, 0);
+  int s = connect(client_dtr,
+		  (struct sockaddr *)&client,
+		  sizeof(client));
+  if(s  == -1) {
+    printf("ERROR: connect\n");
+    return -1;
+  }
+
+  /* Tal vez se requieran mas de una llamada
+   a recv para recibir toda la informacion 
+  enviada desde el server*/
+  if(recv(client_dtr, saludo, 20, 0) < 0) {
+    printf("ERROR: recv\n");
+    return -1;
+  }
   printf("%s\n", saludo); 
   fflush(stdin);
   fflush(stdout);
   fgets(buf, 30, stdin);
-  write(client_dtr, buf, 30);
+  if(write(client_dtr, buf, 30) < 0) {
+    printf("ERROR: write\n");
+    return -1;
+  }
   int l;
-  recv(client_dtr, &l, sizeof(l), 0);
+
+  if(recv(client_dtr, &l, sizeof(l), 0) < 0) {
+    printf("ERROR: recv\n");
+    return -1;
+  }
   printf("Longitud : %i\n", l);
   close(client_dtr);
   

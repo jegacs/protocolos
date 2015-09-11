@@ -17,24 +17,58 @@ int main() {
   
   socklen_t addrlen;
 
-  server_dtr = socket(AF_INET, SOCK_STREAM,0);
+  if((server_dtr = socket(AF_INET,
+			  SOCK_STREAM,0)) == -1) {
+    printf("ERROR: socket\n");
+  }
   memset(&server, 0, sizeof(server)); /* 'Limpia' la estructura */
   
   server.sin_family = AF_INET;
   server.sin_addr.s_addr = INADDR_ANY;
-  server.sin_port = htons(port); /* Convierte entero desde orden de bytes de red al de host */
+  server.sin_port = htons(port); /* Convierte entero desde 
+				    orden de bytes de red al de host 
+				 */
 
-  bind(server_dtr, (struct sockaddr *)&server, sizeof(server));
+  /* Bind asigna la direccion de sockaddr al descriptor */
+  int s = bind(server_dtr,
+	      (struct sockaddr *)&server,
+	      sizeof(server));
+  if(s < 0) {
+    printf("ERROR: bind\n");
+    return -1;
+  }
+  
   listen(server_dtr, 2);
+
   while(1) {
   printf("Esperando conexiones entrantes ... \n");
+
   client_dtr = accept(server_dtr, 
 		      (struct sockaddr *)&client, 
 		      &addrlen);
+
+  if(client_dtr < 0) {
+    printf("ERROR: accept\n");
+    return -1;
+  }
   printf("Conexión con cliente!\n");
-  write(client_dtr, saludo, 20);
-  recv(client_dtr, buf, 30, 0);
+
+  if(write(client_dtr, saludo, 20) < 0) {
+    printf("ERROR: write\n");
+    return -1;
+  }
+
+
+  if(recv(client_dtr, buf, 30, 0) < 0) {
+    printf("ERROR: recv\n");
+    return -1;
+  }
+
   puts(buf);
+  
+  /* Conteo de los caracteres y eliminacion
+     de saltos de linea y espacios.*/
+
   int l = strlen(buf);
   int i;
   for(i = 0; i < strlen(buf); i++) {
@@ -43,8 +77,14 @@ int main() {
       l--;
     }
   }
+
   printf("Longitud : %i\n", l);
-  write(client_dtr, &l, sizeof(l));
+
+  if(write(client_dtr, &l, sizeof(l)) < 0) {
+    printf("ERROR: write\n");
+    return -1;
+  }
+
   close(client_dtr);
   }
   return 0;
