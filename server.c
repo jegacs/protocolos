@@ -53,11 +53,7 @@ int main() {
     
   printf("Conexión con cliente!\n");
 
-  if(write(client_dtr, saludo, 20) < 0) {
-    printf("ERROR: write\n");
-    return -1;
-  }
-
+  write(client_dtr, saludo, 20);
 
   if(recv(client_dtr, buf, 30, 0) < 0) {
     printf("ERROR: recv\n");
@@ -79,12 +75,9 @@ int main() {
   }
 
   printf("Longitud : %i\n", l);
-
-  if(write(client_dtr, &l, sizeof(l)) < 0) {
-    printf("ERROR: write\n");
-    return -1;
-  }
-
+  
+  write(client_dtr, &l, sizeof(l));
+  
   close(client_dtr);
   }
   return 0;
