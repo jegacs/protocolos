@@ -55,10 +55,7 @@ int main() {
 
   write(client_dtr, saludo, 20);
 
-  if(recv(client_dtr, buf, 30, 0) < 0) {
-    printf("ERROR: recv\n");
-    return -1;
-  }
+  recv(client_dtr, buf, 30, 0);
 
   puts(buf);
   
