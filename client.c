@@ -15,7 +15,7 @@ int main() {
   struct sockaddr_in client;
   int port = 2500;
   char buf[30];
-  char saludo[25];
+  char saludo[20];
   
   
   client_dtr = socket(AF_INET, SOCK_STREAM, 0);
@@ -28,8 +28,9 @@ int main() {
   connect(client_dtr , (struct sockaddr *)&client , sizeof(client));
   
   recv(client_dtr, saludo, 20, 0);
-  printf("%s\n", saludo);
+  printf("%s\n", saludo); 
   fflush(stdin);
+  fflush(stdout);
   fgets(buf, 30, stdin);
   write(client_dtr, buf, 30);
   int l;

@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 int main() {
-  char saludo[] = "Escriba su nombre : ";
+  char saludo[] = "Escriba su nombre ";
   int port = 2500;
   char buf[256];
   struct sockaddr_in server;
