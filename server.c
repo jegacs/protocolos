@@ -4,7 +4,7 @@
 #include <string.h>
 #include <netinet/in.h>
 #include <stdlib.h>
-
+#include <unistd.h>
 int main() {
   char saludo[] = "Escriba su nombre : ";
   int port = 2500;
@@ -44,7 +44,7 @@ int main() {
     }
   }
   printf("Longitud : %i\n", l);
-  /* write(client_dtr, &l, sizeof(l)); */
+  write(client_dtr, &l, sizeof(l));
   close(client_dtr);
   }
   return 0;

@@ -32,11 +32,11 @@ int main() {
   fflush(stdin);
   fgets(buf, 30, stdin);
   write(client_dtr, buf, 30);
-  /* int l; */
-  /* recv(client_dtr, &l, sizeof(l), 0); */
-  /* printf("Longitud : %i\n", l); */
+  int l;
+  recv(client_dtr, &l, sizeof(l), 0);
+  printf("Longitud : %i\n", l);
   close(client_dtr);
-
+  
   fflush(stdout);
   return 0;
 }
