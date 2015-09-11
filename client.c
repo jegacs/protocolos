@@ -1,3 +1,11 @@
+/* Protocolos de Internet
+ * Gabriel Acosta
+  *
+ * Creacion de sockets entre servidor-cliente
+ * 11/09/15
+ * client.c
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
