@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/ioctl.h>
 /* Practica 2: Simple sniffer.
  *
  * Protocolos de Internet
@@ -11,7 +8,9 @@
  *
  */
 
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ioctl.h>
 #include <netinet/in.h>
 #include <net/if.h>
 #include <netinet/ip_icmp.h>
